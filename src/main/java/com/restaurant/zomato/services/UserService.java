@@ -62,6 +62,8 @@ public class UserService {
 
 	}
 
+	
+	//ORDER WPULD BE CREATED AND STORED IN DATABASE
 	public Orders getOrderPlaced(long phoneNumber, String address, String name) {
 		Restraurent temp;
 		List<Items> item;
