@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restaurant.zomato.entities.Items;
+import com.restaurant.zomato.entities.Orders;
 import com.restaurant.zomato.services.ItemService;
+import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 
 @RestController
 public class ItemController {
@@ -24,29 +26,62 @@ public class ItemController {
 	
 	@GetMapping("/items")
 	public List<Items>getAllItem(){
-		return this.itemService.getAllItem();
+		List<Items> temp = null;
+		try {
+			temp=this.itemService.getAllItem();
+			if(temp.size()==0)
+				throw new Exception("not found any Item");
+			
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			
+		}
+		return temp;
 	}
 	
 	@GetMapping("/items/{itemName}")
 	public Items getOneItem(@PathVariable String itemName) {
-		return this.itemService.getOneItem(itemName);
+		Items item = null;
+		try {
+			UsersRequestBodyValidation.validateItemName(itemName);
+			item = this.itemService.getOneItem(itemName);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			
+		}
+		return item;
 	}
 	
 	@PostMapping("/items")
 	public Items addItem(@RequestBody Items item) {
-		return this.itemService.addItem(item);
+		Items temp = null;
+		try {
+			UsersRequestBodyValidation.validateItemField(item.getRestraurentId(),item.getItemName(),item.getItemPrice());
+			temp = this.itemService.addItem(item);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return temp;
 		
 	}
 	
 	@PutMapping("/items")
 	public Items updateItem(@RequestBody Items item) {
-		return this.itemService.updateItem(item);
+		Items temp = null;
+		try {
+			UsersRequestBodyValidation.validateItemField(item.getRestraurentId(),item.getItemName(),item.getItemPrice());
+			temp = this.itemService.updateItem(item);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return temp;
 		
 	}
 	
 	@DeleteMapping("/items/{itemName}")
 	public ResponseEntity<HttpStatus> deleteItem(@PathVariable String itemName){
 		try {
+			UsersRequestBodyValidation.validateItemName(itemName);
 			this.itemService.deleteItem(itemName);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}

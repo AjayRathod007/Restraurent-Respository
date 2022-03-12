@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.restaurant.zomato.entities.Orders;
 import com.restaurant.zomato.services.OrderService;
+import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 
 @RestController
 public class OrderController {
@@ -23,12 +24,29 @@ public class OrderController {
 	
 	@GetMapping("/orders")
 	public List<Orders>getAllOrder(){
-		return this.orderService.getAllOrder();
+		List<Orders> temp = null;
+		try {
+			temp=this.orderService.getAllOrder();
+			if(temp.size()==0)
+				throw new Exception("not found any Order");
+			
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+			
+		}
+		return temp;
 	}
 	
 	@GetMapping("/orders/{orderId}")
 	public Orders getOneOrder(@PathVariable int orderId) {
-		return this.orderService.getOneOrder(orderId);
+		Orders temp = null;
+		try {
+			UsersRequestBodyValidation.validateOrderId(orderId);
+			temp = this.orderService.getOneOrder(orderId);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return temp;
 	}
 	
 	@PostMapping("/orders")

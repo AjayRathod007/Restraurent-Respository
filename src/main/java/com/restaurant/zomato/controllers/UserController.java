@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restaurant.zomato.entities.Orders;
 import com.restaurant.zomato.entities.Users;
 import com.restaurant.zomato.services.UserService;
+import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 @RestController
 public class UserController {
 	@Autowired
@@ -23,42 +24,95 @@ public class UserController {
 	
 	@GetMapping("/users")
 	public List<Users>getAllUser(){
-		return this.userService.getAllUser();
+		List<Users> user = null;
+		try {
+			user = this.userService.getAllUser();
+			if(user.size()==0)
+				throw new Exception("not found any user");
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		return user;
 	}
 	@GetMapping("/users/{userId}")
 	public Users getOneUser(@PathVariable long userId) {
-		return this.userService.getOneUser(userId);
+		Users temp=null;
+		try
+		{
+			UsersRequestBodyValidation.validateUserPhoneNumber(userId);
+		    temp = userService.getOneUser(userId); 
+		}catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		return temp;
 	}
-	
+		
 	@PostMapping("/signup")
 	public Users addUser(@RequestBody Users user) {
-		return this.userService.addUser(user);
 		
+		Users temp=null;
+		try
+		{
+			UsersRequestBodyValidation.validateUserPhoneNumber(user.getPhoneNumber());
+		    temp = this.userService.addUser(user);
+		}catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		return temp;
 	}
 	
 	@PutMapping("/users")
 	public Users updateUser(@RequestBody Users user) {
-		return this.userService.updateUser(user);
+		Users temp=null;
+		try
+		{
+			UsersRequestBodyValidation.validateUserPhoneNumber(user.getPhoneNumber());
+		    temp = this.userService.updateUser(user);
+		}catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		
+		return temp;
+	}
+
+	
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<String> deleteUser(@PathVariable long userId){
+		try
+		{
+			UsersRequestBodyValidation.validateUserPhoneNumber(userId);
+				this.userService.deleteUser(userId);
+				return new ResponseEntity<String>( "user has been deleted successfully", HttpStatus.OK);
+		}		
+			catch(Exception e){
+				return new ResponseEntity<String>("user has not been deleted", HttpStatus.NOT_FOUND);
+				
+		}
+		
+	
+}
+	
+	
+	@GetMapping("/placeorders/{phoneNumber}/{address}/{name}")
+	public Orders getPlaceOrder(@PathVariable long phoneNumber,@PathVariable String address,@PathVariable String name) {
+		Orders entity = null;
+		try {
+			UsersRequestBodyValidation.validatePlaceOrderField(phoneNumber, address, name);
+			entity = this.userService.getOrderPlaced(phoneNumber, address, name);
+			
+		}catch(Exception e)
+		{
+			System.out.println(e.getMessage());
+		}
+		return entity;
 		
 	}
 	
-	@DeleteMapping("/users/{userId}")
-	public ResponseEntity<HttpStatus> deleteUser(@PathVariable long userId){
-		try {
-			this.userService.deleteUser(userId);
-			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch(Exception e){
-			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-			
-		}
-
-
-}
-	@GetMapping("/placeorders/{phoneNumber}/{address}/{name}")
-	public Orders getPlaceOrder(@PathVariable long phoneNumber,@PathVariable String address,@PathVariable String name) {
-		return userService.getOrderPlaced(phoneNumber, address, name);
-		
-	}
 
 }

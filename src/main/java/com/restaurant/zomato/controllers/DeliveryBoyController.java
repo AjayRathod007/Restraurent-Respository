@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.restaurant.zomato.entities.DeliveryBoy;
 import com.restaurant.zomato.services.DeliveryBoyService;
+import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 
 @RestController
 public class DeliveryBoyController {
@@ -23,28 +24,65 @@ public class DeliveryBoyController {
 	
 	@GetMapping("/deliveries")
 	public List<DeliveryBoy>getAllDeliveryBoy(){
-		return this.deliveryBoyService.getAllDeliveryBoy();
+		List<DeliveryBoy> temp=null;
+		try {
+			temp=this.deliveryBoyService.getAllDeliveryBoy();
+			throw new Exception("delivery Boy not found");
+			
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return temp;
 	}
 	@GetMapping("/deliveries/{deliveryBoyId}")
 	public DeliveryBoy getOneDeliveryBoy(@PathVariable int deliveryBoyId) {
-		return this.deliveryBoyService.getOneDeliveryBoy(deliveryBoyId);
+		DeliveryBoy boy = null;
+		try{
+			 UsersRequestBodyValidation.validateDeliveryBoyId(deliveryBoyId);
+			 boy = this.deliveryBoyService.getOneDeliveryBoy(deliveryBoyId);
+	
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		return boy;
 	}
 	
 	@PostMapping("/deliveries")
 	public DeliveryBoy addDeliveryBoy(@RequestBody DeliveryBoy deliveryBoy) {
-		return this.deliveryBoyService.addDeliveryBoy(deliveryBoy);
+		DeliveryBoy boy = null;
+		try{
+			 UsersRequestBodyValidation.validateDeliveryBoyField(deliveryBoy.getdeliveryBoyId(),deliveryBoy.getRestraurentId(),deliveryBoy.getAddress());
+			 boy=this.deliveryBoyService.addDeliveryBoy(deliveryBoy);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			
+		}
+		
+		
+		return boy;
 		
 	}
 	
 	@PutMapping("/deliveries")
 	public DeliveryBoy updateDeliveryBoy(@RequestBody DeliveryBoy deliveryBoy) {
-		return this.deliveryBoyService.updateDeliveryBoy(deliveryBoy);
+		DeliveryBoy boy = null;
+		try{
+			 UsersRequestBodyValidation.validateDeliveryBoyField(deliveryBoy.getdeliveryBoyId(),deliveryBoy.getRestraurentId(),deliveryBoy.getAddress());
+			 boy=this.deliveryBoyService.updateDeliveryBoy(deliveryBoy);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+			
+		}
+		
+		
+		return boy;
 		
 	}
 	
 	@DeleteMapping("/deliveries/{deliveriesId}")
 	public ResponseEntity<HttpStatus> deleteDeliveryBoy(@PathVariable int deliveryBoyId){
 		try {
+			UsersRequestBodyValidation.validateDeliveryBoyId(deliveryBoyId);
 			this.deliveryBoyService.deleteDeliveryBoy(deliveryBoyId);
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
