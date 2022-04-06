@@ -1,30 +1,35 @@
 package com.restaurant.zomato.entities;
 
+import lombok.Data;
+
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
+@Data
 public class Restraurent {
 	@Id
-	private int restraurentId;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int restaurantId;
 	private String name;
 	private String address;
-	public Restraurent(int restraurentId, String name, String address) {
+	public Restraurent(int restaurantId, String name, String address) {
 		super();
-		this.restraurentId = restraurentId;
+		this.restaurantId = restaurantId;
 		this.name = name;
 		this.address = address;
-		
 	}
 	public Restraurent() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public int getrestraurentId() {
-		return restraurentId;
+	public int getRestaurantId() {
+		return restaurantId;
 	}
-	public void setId(int restraurentId) {
-		this.restraurentId = restraurentId;
+	public void setRestaurantId(int restaurantId) {
+		this.restaurantId = restaurantId;
 	}
 	public String getName() {
 		return name;
@@ -40,8 +45,10 @@ public class Restraurent {
 	}
 	@Override
 	public String toString() {
-		return "Restraurent [restraurentId=" + restraurentId + ", name=" + name + ", address=" + address + ", menuId="  + "]";
+		return "Restraurent [restaurantId=" + restaurantId + ", name=" + name + ", address=" + address + "]";
 	}
 	
+	
+
 
 }

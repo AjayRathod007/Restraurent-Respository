@@ -6,7 +6,7 @@ public class UsersRequestBodyValidation {
 		String id;
 		id = String.valueOf(phoneNumber);
 		if (id.length() != 10)
-			throw new Exception("invalid phone Number");
+			throw new Exception("invalid phone Number we");
 	}
 
 	public static void validateRestraurentId(int restraurentId) throws Exception {
@@ -17,6 +17,12 @@ public class UsersRequestBodyValidation {
 			throw new Exception("null value sent");
 	}
 
+	public static void validateRestraurentByLocation(String restraurentAdd) throws Exception {
+		
+		if (restraurentAdd.length() == 0)
+			throw new Exception("null value sent");
+	}
+	
 	public static void validatePlaceOrderField(long phoneNumber, String address, String name) throws Exception {
 		String phone;
 		phone = String.valueOf(phoneNumber);
@@ -34,8 +40,8 @@ public class UsersRequestBodyValidation {
 		}
 	}
 
-	public static void validateItemName(String itemName) throws Exception {
-		if (itemName.length() == 0)
+	public static void validateItemName(int itemId) throws Exception {
+		if (itemId < 0)
 			throw new Exception("wrong item Name");
 	}
 

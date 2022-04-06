@@ -18,9 +18,14 @@ public class RestraurentService {
 		return restraurentDao.findAll();
 	}
 
-	public Restraurent getOneRestraurent(int restraurentId) {
+	public Restraurent getOneRestraurentById(int restraurentId) {
 	
 		return restraurentDao.getById(restraurentId);
+	}
+	
+	public List<Restraurent> getAllRestraurentByAdd(String restraurentAdd) {
+		
+		return restraurentDao.findByAddress(restraurentAdd);
 	}
 
 	public Restraurent addRestraurent(Restraurent restraurent) {
@@ -53,6 +58,7 @@ public class RestraurentService {
 	}
 
 
-	
-
+	public List<Restraurent> getRestaurentByAddress(String location) {
+		return restraurentDao.findByAddress(location);
+	}
 }

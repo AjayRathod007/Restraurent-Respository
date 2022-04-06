@@ -20,9 +20,9 @@ public class ItemService {
 		return itemDao.findAll();
 	}
 
-	public Items getOneItem(String itemName) {
+	public Items getOneItem(Integer itemId) {
 	
-		return itemDao.getById(itemName);
+		return itemDao.getById(itemId);
 	}
 
 	public Items addItem(Items item) {
@@ -37,15 +37,25 @@ public class ItemService {
 		
 	}
 
-	public void deleteItem(String itemName) {
-		Items entity=itemDao.getById(itemName);
+	public void deleteItem(int itemId) {
+		Items entity=itemDao.getById(itemId);
 		itemDao.delete(entity);
 		
 	}
-	public List<Items> getAllRestraurentItems(int restraurentId){
+	public List<Items> getAllRestraurentItems(int restaurantId){
 		
-		List<Items> item = itemDao.findByRestraurentId(restraurentId);
+		List<Items> item = itemDao.findByRestaurantId(restaurantId);
 		return item;
+	}
+
+	public List<Items> getAllItemByRestraurentId(int restraurentId) {
+		 List<Items> item =itemDao.findByRestaurantId(restraurentId);
+		return item;
+	}
+
+	public void save(Items item) {
+		itemDao.save(item);
+		
 	}
 
 }

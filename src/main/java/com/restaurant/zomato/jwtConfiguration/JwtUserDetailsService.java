@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 
 import java.util.ArrayList;
@@ -42,4 +42,4 @@ public class JwtUserDetailsService implements UserDetailsService {
 		}
 	}
 }
-	
+	*/

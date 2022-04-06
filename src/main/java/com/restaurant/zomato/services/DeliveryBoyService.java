@@ -42,7 +42,7 @@ public class DeliveryBoyService {
 	
 	public DeliveryBoy getDeliveryBoyByRestraurentId(int restraurentId) {
 		DeliveryBoy boy;
-		boy = deliveryBoyDao.findByRestraurentId(restraurentId);
+		boy = deliveryBoyDao.findByRestaurantId(restraurentId);
 				return boy;
 	}
 

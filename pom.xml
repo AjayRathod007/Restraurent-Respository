@@ -8,14 +8,14 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.zomato</groupId>
-	<artifactId>zomato</artifactId>
+	<artifactId>zomato_2.0</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>zomato</name>
+	<name>zomato 2.0</name>
 	<description>Demo project for Spring Boot</description>
-	
-	
+
+
 	<properties>
-		<java.version>11</java.version>
+		<java.version>8</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,25 +26,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		
+
+		<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-thymeleaf -->
 		<dependency>
-			<groupId>io.jsonwebtoken</groupId>
-			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
-		</dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+			</dependency>
 
-	   <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-security</artifactId>
-       </dependency>
-    
-    <!-- https://mvnrepository.com/artifact/javax.xml.bind/jaxb-api -->
-       <dependency>
-           <groupId>javax.xml.bind</groupId>
-           <artifactId>jaxb-api</artifactId>
-           <version>2.2.11</version>
-       </dependency>
 
-    
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
@@ -54,6 +44,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.16.18</version>
 		</dependency>
 	</dependencies>
 

@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 import java.io.IOException;
 import javax.servlet.FilterChain;
@@ -75,4 +75,4 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		}
 		chain.doFilter(request, response);
 	}
-}
+}*/

@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -19,4 +19,4 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint, Se
 		
 		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
 	}
-}
+}*/

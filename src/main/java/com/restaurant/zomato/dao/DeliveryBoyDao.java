@@ -7,6 +7,6 @@ import com.restaurant.zomato.entities.DeliveryBoy;
 
 public interface DeliveryBoyDao extends JpaRepository<DeliveryBoy, Integer> {
 
-	DeliveryBoy findByRestraurentId(int restraurentId);
+	DeliveryBoy findByRestaurantId(int restaurantId);
 
 }

@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 
 import java.io.Serializable;
@@ -87,4 +87,4 @@ public class JwtTokenUtil implements Serializable {
 		final String username = getUsernameFromToken(token);
 		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 	}
-}
+}*/

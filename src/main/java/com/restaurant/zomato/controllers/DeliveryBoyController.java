@@ -51,7 +51,7 @@ public class DeliveryBoyController {
 	public DeliveryBoy addDeliveryBoy(@RequestBody DeliveryBoy deliveryBoy) {
 		DeliveryBoy boy = null;
 		try{
-			 UsersRequestBodyValidation.validateDeliveryBoyField(deliveryBoy.getdeliveryBoyId(),deliveryBoy.getRestraurentId(),deliveryBoy.getAddress());
+			 UsersRequestBodyValidation.validateDeliveryBoyField(deliveryBoy.getDeliveryBoyId(),deliveryBoy.getRestaurantId(),deliveryBoy.getAddress());
 			 boy=this.deliveryBoyService.addDeliveryBoy(deliveryBoy);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -67,7 +67,7 @@ public class DeliveryBoyController {
 	public DeliveryBoy updateDeliveryBoy(@RequestBody DeliveryBoy deliveryBoy) {
 		DeliveryBoy boy = null;
 		try{
-			 UsersRequestBodyValidation.validateDeliveryBoyField(deliveryBoy.getdeliveryBoyId(),deliveryBoy.getRestraurentId(),deliveryBoy.getAddress());
+			 UsersRequestBodyValidation.validateDeliveryBoyField(deliveryBoy.getRestaurantId(),deliveryBoy.getDeliveryBoyId(),deliveryBoy.getAddress());
 			 boy=this.deliveryBoyService.updateDeliveryBoy(deliveryBoy);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());

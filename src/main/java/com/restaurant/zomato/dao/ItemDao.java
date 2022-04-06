@@ -7,9 +7,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.restaurant.zomato.entities.Items;
 
-public interface ItemDao extends JpaRepository<Items, String> {
+public interface ItemDao extends JpaRepository<Items, Integer> {
 
-	List<Items> findByRestraurentId(int restraurentId);
+	List<Items> findByRestaurantId(int restaurantId);
 
 	 
 

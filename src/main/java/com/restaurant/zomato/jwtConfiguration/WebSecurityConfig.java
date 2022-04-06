@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,4 +67,4 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// Add a filter to validate the tokens with every request
 	httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 	}
-}
+}*/

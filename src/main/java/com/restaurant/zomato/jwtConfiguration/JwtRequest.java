@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 import java.io.Serializable;
 
@@ -37,4 +37,4 @@ public class JwtRequest implements Serializable {
 		return "JwtRequest [username=" + userName + ", password=" + password + "]";
 	}
     
-}
+}*/

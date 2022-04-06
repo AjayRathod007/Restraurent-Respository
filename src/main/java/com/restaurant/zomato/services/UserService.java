@@ -1,26 +1,29 @@
 package com.restaurant.zomato.services;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.zomato.dao.UserDao;
+import com.restaurant.zomato.dto.LoginResult;
+import com.restaurant.zomato.dto.UserLoginResponseBody;
 import com.restaurant.zomato.entities.DeliveryBoy;
 import com.restaurant.zomato.entities.Items;
-import com.restaurant.zomato.entities.Orders;
+import com.restaurant.zomato.entities.LoginUser;
+import com.restaurant.zomato.entities.UserOrders;
 import com.restaurant.zomato.entities.Restraurent;
 import com.restaurant.zomato.entities.Users;
 
 @Service
 public class UserService {
 	
-	@Lazy
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+	//@Lazy
+	//@Autowired
+	//private PasswordEncoder passwordEncoder;
 	
 	@Autowired
 	public UserDao userDao;
@@ -45,7 +48,7 @@ public class UserService {
 
 	public Users addUser(Users user)
 	{
-		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		//user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDao.save(user);
 		return user;
 	}
@@ -64,7 +67,7 @@ public class UserService {
 
 	
 	//ORDER WPULD BE CREATED AND STORED IN DATABASE
-	public Orders getOrderPlaced(long phoneNumber, String address, String name) {
+	public UserOrders getOrderPlaced(long phoneNumber, String address, String name) {
 		Restraurent temp;
 		List<Items> item;
 		DeliveryBoy boy;
@@ -72,18 +75,48 @@ public class UserService {
 		Date date = new Date();
 
 		temp = restraurentService.getAllRestraurentByAddress(address, name);
-		item = itemService.getAllRestraurentItems(temp.getrestraurentId());
+		item = itemService.getAllRestraurentItems(temp.getRestaurantId());
 		for (Items x : item) {
 			amount += x.getItemPrice();
 
 		}
-		boy = deliveryBoyService.getDeliveryBoyByRestraurentId(temp.getrestraurentId());
+		boy = deliveryBoyService.getDeliveryBoyByRestraurentId(temp.getRestaurantId());
 
-		Orders order = new Orders(1001, phoneNumber, temp.getrestraurentId(), boy.getdeliveryBoyId(), "placed", amount,
-				date);
-		orderService.addOrder(order);
-		return order;
-
+		UserOrders order = new UserOrders();
+		order.setOrderStatus("placed");
+		order.setAmount(amount);
+		order.setDate(new Date());
+		order.setUserId(phoneNumber);
+		order.setRestaurantId(temp.getRestaurantId());
+		order.setDeliveryBoyId(boy.getDeliveryBoyId());
+		return orderService.addOrder(order);
 	}
+
+	public UserLoginResponseBody userAuthentication(long userid, String password) throws Exception {
+		Users user = userDao.getById(userid);
+		
+		
+		LoginResult lor = new LoginResult();
+		
+		UserLoginResponseBody res = new UserLoginResponseBody();
+		lor.setName(user.getName());
+		lor.setPhoneNumber(user.getPhoneNumber());
+		
+		ArrayList<LoginResult> arr = new ArrayList<>();
+		
+		arr.add(lor);
+		res.setRes(arr);
+		
+		
+		if(!user.getPassword().equals(password))
+		    throw new Exception("Invalid Credentials");
+		
+		res.setStatus("PASS");
+		res.setStatusCode(200);
+		
+		
+	return res;
+	}
+
 
 }

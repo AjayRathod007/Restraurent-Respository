@@ -1,4 +1,4 @@
-package com.restaurant.zomato.jwtConfiguration;
+/*package com.restaurant.zomato.jwtConfiguration;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,4 +59,4 @@ public class JwtAuthenticationController {
 			throw new Exception("INVALID_CREDENTIALS", e);
 		}
 	}
-}
+}*/
