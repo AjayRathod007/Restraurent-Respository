@@ -15,7 +15,7 @@ import com.restaurant.zomato.entities.DeliveryBoy;
 import com.restaurant.zomato.entities.Items;
 import com.restaurant.zomato.entities.LoginUser;
 import com.restaurant.zomato.entities.UserOrders;
-import com.restaurant.zomato.entities.Restraurent;
+import com.restaurant.zomato.entities.Restaurant;
 import com.restaurant.zomato.entities.Users;
 
 @Service
@@ -28,7 +28,7 @@ public class UserService {
 	@Autowired
 	public UserDao userDao;
 	@Autowired
-	public RestraurentService restraurentService;
+	public RestaurantService restaurantService;
 	@Autowired
 	public ItemService itemService;
 	@Autowired
@@ -68,19 +68,19 @@ public class UserService {
 	
 	//ORDER WPULD BE CREATED AND STORED IN DATABASE
 	public UserOrders getOrderPlaced(long phoneNumber, String address, String name) {
-		Restraurent temp;
+		Restaurant temp;
 		List<Items> item;
 		DeliveryBoy boy;
 		int amount = 0;
 		Date date = new Date();
 
-		temp = restraurentService.getAllRestraurentByAddress(address, name);
-		item = itemService.getAllRestraurentItems(temp.getRestaurantId());
+		temp = restaurantService.getAllRestaurantByAddress(address, name);
+		item = itemService.getAllRestaurantItems(temp.getRestaurantId());
 		for (Items x : item) {
 			amount += x.getItemPrice();
 
 		}
-		boy = deliveryBoyService.getDeliveryBoyByRestraurentId(temp.getRestaurantId());
+		boy = deliveryBoyService.getDeliveryBoyByRestaurantId(temp.getRestaurantId());
 
 		UserOrders order = new UserOrders();
 		order.setOrderStatus("placed");

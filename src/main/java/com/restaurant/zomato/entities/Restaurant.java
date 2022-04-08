@@ -9,19 +9,19 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class Restraurent {
+public class Restaurant {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int restaurantId;
 	private String name;
 	private String address;
-	public Restraurent(int restaurantId, String name, String address) {
+	public Restaurant(int restaurantId, String name, String address) {
 		super();
 		this.restaurantId = restaurantId;
 		this.name = name;
 		this.address = address;
 	}
-	public Restraurent() {
+	public Restaurant() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
@@ -45,7 +45,7 @@ public class Restraurent {
 	}
 	@Override
 	public String toString() {
-		return "Restraurent [restaurantId=" + restaurantId + ", name=" + name + ", address=" + address + "]";
+		return "Restaurant [restaurantId=" + restaurantId + ", name=" + name + ", address=" + address + "]";
 	}
 	
 	

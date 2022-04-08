@@ -9,17 +9,17 @@ public class UsersRequestBodyValidation {
 			throw new Exception("invalid phone Number we");
 	}
 
-	public static void validateRestraurentId(int restraurentId) throws Exception {
+	public static void validateRestaurantId(int restaurantId) throws Exception {
 		String id;
 
-		id = String.valueOf(restraurentId);
+		id = String.valueOf(restaurantId);
 		if (id.length() == 0)
 			throw new Exception("null value sent");
 	}
 
-	public static void validateRestraurentByLocation(String restraurentAdd) throws Exception {
+	public static void validateRestaurantByLocation(String restaurantAdd) throws Exception {
 		
-		if (restraurentAdd.length() == 0)
+		if (restaurantAdd.length() == 0)
 			throw new Exception("null value sent");
 	}
 	
@@ -45,10 +45,10 @@ public class UsersRequestBodyValidation {
 			throw new Exception("wrong item Name");
 	}
 
-	public static void validateItemField(int restraurentId, String itemName, int itemPrice) throws Exception {
+	public static void validateItemField(int restaurantId, String itemName, int itemPrice) throws Exception {
 		String id;
 		String price;
-		id = String.valueOf(restraurentId);
+		id = String.valueOf(restaurantId);
 		price = String.valueOf(itemPrice);
 		if (id.length() == 0 || price.length() == 0 || itemName.length() == 0)
 			throw new Exception("wrong item details");
@@ -64,10 +64,10 @@ public class UsersRequestBodyValidation {
 
 	}
 
-	public static void validateDeliveryBoyField(int restraurentId, int deliveryBoyId, String address) throws Exception {
+	public static void validateDeliveryBoyField(int restaurantId, int deliveryBoyId, String address) throws Exception {
 		String rsId;
 		String dId;
-		rsId = String.valueOf(restraurentId);
+		rsId = String.valueOf(restaurantId);
 		dId = String.valueOf(deliveryBoyId);
 		if (rsId.length() == 0 || dId.length() == 0 || address.length() == 0)
 			throw new Exception("wrong delivery Boy Details sent");

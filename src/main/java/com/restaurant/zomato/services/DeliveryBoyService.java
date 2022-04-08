@@ -40,9 +40,9 @@ public class DeliveryBoyService {
 		
 	}
 	
-	public DeliveryBoy getDeliveryBoyByRestraurentId(int restraurentId) {
+	public DeliveryBoy getDeliveryBoyByRestaurantId(int restaurantId) {
 		DeliveryBoy boy;
-		boy = deliveryBoyDao.findByRestaurantId(restraurentId);
+		boy = deliveryBoyDao.findByRestaurantId(restaurantId);
 				return boy;
 	}
 

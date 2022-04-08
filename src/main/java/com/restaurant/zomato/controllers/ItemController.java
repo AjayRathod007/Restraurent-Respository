@@ -2,6 +2,8 @@ package com.restaurant.zomato.controllers;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +23,8 @@ import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 @RestController
 @CrossOrigin(origins= {"http://localhost:3000"})
 public class ItemController {
+	
+	 Logger logger = LoggerFactory.getLogger(ItemController.class);
 	@Autowired
 	public ItemService itemService;
 	
@@ -39,13 +43,15 @@ public class ItemController {
 		}
 		return temp;
 	}
-	@GetMapping("/menu/{restraurentId}")
-	public List<Items>getAllItemByRestraurentId(int restraurentId){
+	@GetMapping("/menu/{restaurantId}")
+	public List<Items>getAllItemByRestaurantId(@PathVariable int restaurantId){
 		List<Items> temp = null;
 		try {
-			UsersRequestBodyValidation.validateRestraurentId(restraurentId);
-			temp=this.itemService.getAllItemByRestraurentId(restraurentId);
 			
+			logger.info("Received restaurantId {}",restaurantId);
+			UsersRequestBodyValidation.validateRestaurantId(restaurantId);
+			temp=this.itemService.getAllItemByRestaurantId(restaurantId);
+			logger.info("Saved RestaurantId {}",restaurantId);
 		}catch(Exception e){
 			System.out.println(e.getMessage());
 			

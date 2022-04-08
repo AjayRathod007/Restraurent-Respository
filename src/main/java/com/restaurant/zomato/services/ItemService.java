@@ -42,14 +42,14 @@ public class ItemService {
 		itemDao.delete(entity);
 		
 	}
-	public List<Items> getAllRestraurentItems(int restaurantId){
+	public List<Items> getAllRestaurantItems(int restaurantId){
 		
 		List<Items> item = itemDao.findByRestaurantId(restaurantId);
 		return item;
 	}
 
-	public List<Items> getAllItemByRestraurentId(int restraurentId) {
-		 List<Items> item =itemDao.findByRestaurantId(restraurentId);
+	public List<Items> getAllItemByRestaurantId(int restaurantId) {
+		 List<Items> item =itemDao.findByRestaurantId(restaurantId);
 		return item;
 	}
 
