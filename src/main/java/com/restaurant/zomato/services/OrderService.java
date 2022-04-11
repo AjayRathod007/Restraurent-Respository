@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.restaurant.zomato.dao.DeliveryBoyDao;
 import com.restaurant.zomato.dao.ItemDao;
+import com.restaurant.zomato.dto.OrderRequestBody;
 import com.restaurant.zomato.dto.PlacedOrder;
 import com.restaurant.zomato.dto.PreviewOrder;
 import com.restaurant.zomato.dto.UserSelectedItem;
+import com.restaurant.zomato.entities.Cart;
 import com.restaurant.zomato.entities.DeliveryBoy;
 import com.restaurant.zomato.entities.Items;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,44 +58,44 @@ public class OrderService {
 	}
 
 
-	public PlacedOrder placeOrder(PreviewOrder previewOrder) throws Exception {
-		
-		List<UserSelectedItem> userSelectedItems=previewOrder.getListOfItems();
-		
-		//System.out.println(userSelectedItems.size());
-		
-		int totalAmt=0;
-		int price;
-		for(int i=0;i<userSelectedItems.size();i++){
-			
-			UserSelectedItem userSelectedItem=userSelectedItems.get(i);
-			
-			Items item= itemDao.getById(userSelectedItem.getItemId());
-			
-			//Verify that demanding items are in stock or not
-			if(item.getQuantity()>userSelectedItem.getQuantity())
-			{
-				item.setQuantity(item.getQuantity()-userSelectedItem.getQuantity());
-				price = item.getItemPrice()*userSelectedItem.getQuantity();
-			}	
-			else
-			{
-				item.setQuantity(0);
-				price = item.getItemPrice()*item.getQuantity();
-			}
-			
-			//After updating quantity of current item need to be store updated data into databse
-            itemService.save(item);
-            
-			totalAmt=totalAmt+price;
-		}
-		
-		if(totalAmt==0)
-			throw new Exception("user items are not over");
-		DeliveryBoy deliv = deliveryBoyDao.findByRestaurantId(previewOrder.getRestaurantId());
-		UserOrders order = createOrder(totalAmt, previewOrder, deliv);
-		return getPlaceOrder(order,deliv,previewOrder);
-	}
+//	public PlacedOrder placeOrder(Cart cart) throws Exception {
+//		
+//		List<UserSelectedItem> userSelectedItems=cart.getListOfItems();
+//		
+//		//System.out.println(userSelectedItems.size());
+//		
+//		int totalAmt=0;
+//		int price;
+//		for(int i=0;i<userSelectedItems.size();i++){
+//			
+//			UserSelectedItem userSelectedItem=userSelectedItems.get(i);
+//			
+//			Items item= itemDao.getById(userSelectedItem.getItemId());
+//			
+//			//Verify that demanding items are in stock or not
+//			if(item.getQuantity()>userSelectedItem.getQuantity())
+//			{
+//				item.setQuantity(item.getQuantity()-userSelectedItem.getQuantity());
+//				price = item.getItemPrice()*userSelectedItem.getQuantity();
+//			}	
+//			else
+//			{
+//				item.setQuantity(0);
+//				price = item.getItemPrice()*item.getQuantity();
+//			}
+//			
+//			//After updating quantity of current item need to be store updated data into databse
+//            itemService.save(item);
+//            
+//			totalAmt=totalAmt+price;
+//		}
+//		
+//		if(totalAmt==0)
+//			throw new Exception("user items are not over");
+//		DeliveryBoy deliv = deliveryBoyDao.findByRestaurantId(previewOrder.getRestaurantId());
+//		UserOrders order = createOrder(totalAmt, previewOrder, deliv);
+//		return getPlaceOrder(order,deliv,previewOrder);
+//	}
 
 	private PlacedOrder getPlaceOrder(UserOrders order, DeliveryBoy deliv, PreviewOrder previewOrder) {
 		PlacedOrder p =new PlacedOrder();
@@ -110,10 +112,34 @@ public class OrderService {
 		if(totalAmt!=0)
 		o.setOrderStatus("SUCCESS");
 		o.setDeliveryBoyId(deliv.getDeliveryBoyId());
-		o.setSelectedMenu(previewOrder.getListOfItems().toString());
+		//o.setSelectedMenu(previewOrder.getListOfItems().toString());
 		o.setRestaurantId(previewOrder.getRestaurantId());
 		o.setUserId(previewOrder.getUserId());
 		
 		return orderDao.save(o);
+	}
+
+	
+	
+	
+	//NEW METHOD FOR PLACING ORDER.
+	public UserOrders confirmOrder(OrderRequestBody orderRequestBody) {
+		
+		UserOrders newOrder = new UserOrders();
+		
+		newOrder.setUserId(orderRequestBody.getPhoneNumber());
+		newOrder.setDate(new Date());
+		newOrder.setRestaurantId(orderRequestBody.getRestaurantId());
+		newOrder.setCartId(orderRequestBody.getCartId());
+	   	
+		newOrder.setDeliveryBoyId(getDeliveryBoyId(orderRequestBody.getRestaurantId()));
+		newOrder.setAmount(orderRequestBody.getAmount());
+		newOrder.setOrderStatus("success");
+		orderDao.save(newOrder);
+		return newOrder;
+	}
+	public int getDeliveryBoyId(int restaurantId) {
+		DeliveryBoy deliv = deliveryBoyDao.findByRestaurantId(restaurantId);
+		return deliv.getDeliveryBoyId();
 	}
 }

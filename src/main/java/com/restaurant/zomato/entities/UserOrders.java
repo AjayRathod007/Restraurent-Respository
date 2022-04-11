@@ -21,16 +21,15 @@ public class UserOrders {
 	@Column(nullable = false)
 	private int deliveryBoyId ;
 	private String orderStatus;
-	private int amount;
+	private long amount;
 	private Date date;
-	private String selectedMenu;
-	
+	private int cartId;
 	public UserOrders() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public UserOrders(int orderId, long userId, int restaurantId, int deliveryBoyId, String orderStatus, int amount,
-			Date date, String selectedMenu) {
+	public UserOrders(int orderId, long userId, int restaurantId, int deliveryBoyId, String orderStatus, long amount,
+			Date date, int cartId) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
@@ -39,7 +38,7 @@ public class UserOrders {
 		this.orderStatus = orderStatus;
 		this.amount = amount;
 		this.date = date;
-		this.selectedMenu = selectedMenu;
+		this.cartId = cartId;
 	}
 	public int getOrderId() {
 		return orderId;
@@ -71,10 +70,10 @@ public class UserOrders {
 	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
-	public int getAmount() {
+	public long getAmount() {
 		return amount;
 	}
-	public void setAmount(int amount) {
+	public void setAmount(long amount) {
 		this.amount = amount;
 	}
 	public Date getDate() {
@@ -83,18 +82,19 @@ public class UserOrders {
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public String getSelectedMenu() {
-		return selectedMenu;
+	public int getCartId() {
+		return cartId;
 	}
-	public void setSelectedMenu(String selectedMenu) {
-		this.selectedMenu = selectedMenu;
+	public void setCartId(int cartId) {
+		this.cartId = cartId;
 	}
 	@Override
 	public String toString() {
 		return "UserOrders [orderId=" + orderId + ", userId=" + userId + ", restaurantId=" + restaurantId
 				+ ", deliveryBoyId=" + deliveryBoyId + ", orderStatus=" + orderStatus + ", amount=" + amount + ", date="
-				+ date + ", selectedMenu=" + selectedMenu + "]";
+				+ date + ", cartId=" + cartId + "]";
 	}
+	
 	
 	
 	

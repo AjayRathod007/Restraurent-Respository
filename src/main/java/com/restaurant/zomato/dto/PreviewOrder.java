@@ -3,7 +3,7 @@ package com.restaurant.zomato.dto;
 import lombok.Data;
 
 import java.util.List;
-
+    
 @Data
 public class PreviewOrder {
 	
