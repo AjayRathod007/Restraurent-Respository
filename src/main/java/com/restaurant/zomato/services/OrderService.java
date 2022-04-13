@@ -6,14 +6,18 @@ import java.util.List;
 import com.restaurant.zomato.dao.DeliveryBoyDao;
 import com.restaurant.zomato.dao.ItemDao;
 import com.restaurant.zomato.dto.OrderRequestBody;
+import com.restaurant.zomato.dto.PaymentPayload;
 import com.restaurant.zomato.dto.PlacedOrder;
 import com.restaurant.zomato.dto.PreviewOrder;
+import com.restaurant.zomato.dto.TransactionEntity;
 import com.restaurant.zomato.dto.UserSelectedItem;
 import com.restaurant.zomato.entities.Cart;
 import com.restaurant.zomato.entities.DeliveryBoy;
 import com.restaurant.zomato.entities.Items;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.restaurant.zomato.dao.OrderDao;
 import com.restaurant.zomato.entities.UserOrders;
@@ -126,7 +130,8 @@ public class OrderService {
 	public UserOrders confirmOrder(OrderRequestBody orderRequestBody) {
 		
 		UserOrders newOrder = new UserOrders();
-		
+          int id=	paymentDone(orderRequestBody.getPhoneNumber(),orderRequestBody.getAmount());
+	    newOrder.setTransactionId(id);
 		newOrder.setUserId(orderRequestBody.getPhoneNumber());
 		newOrder.setDate(new Date());
 		newOrder.setRestaurantId(orderRequestBody.getRestaurantId());
@@ -138,6 +143,17 @@ public class OrderService {
 		orderDao.save(newOrder);
 		return newOrder;
 	}
+	
+
+	private  int paymentDone(long phoneNumber, long amount) {
+		String baseUrl= "http://localhost:8080/sendmoneytozomato";
+		PaymentPayload  temp = new PaymentPayload(Long.toString(phoneNumber),"8519042337",amount);
+	
+		RestTemplate restTemplate = new RestTemplate();
+	    Integer newtra = restTemplate.postForObject(baseUrl, temp, Integer.class);
+		return newtra;
+	}
+
 	public int getDeliveryBoyId(int restaurantId) {
 		DeliveryBoy deliv = deliveryBoyDao.findByRestaurantId(restaurantId);
 		return deliv.getDeliveryBoyId();

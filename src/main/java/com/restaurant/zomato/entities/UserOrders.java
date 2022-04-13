@@ -24,12 +24,13 @@ public class UserOrders {
 	private long amount;
 	private Date date;
 	private int cartId;
+	private int transactionId;
 	public UserOrders() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 	public UserOrders(int orderId, long userId, int restaurantId, int deliveryBoyId, String orderStatus, long amount,
-			Date date, int cartId) {
+			Date date, int cartId, int transactionId) {
 		super();
 		this.orderId = orderId;
 		this.userId = userId;
@@ -39,6 +40,7 @@ public class UserOrders {
 		this.amount = amount;
 		this.date = date;
 		this.cartId = cartId;
+		this.transactionId = transactionId;
 	}
 	public int getOrderId() {
 		return orderId;
@@ -88,11 +90,17 @@ public class UserOrders {
 	public void setCartId(int cartId) {
 		this.cartId = cartId;
 	}
+	public int getTransactionId() {
+		return transactionId;
+	}
+	public void setTransactionId(int transactionId) {
+		this.transactionId = transactionId;
+	}
 	@Override
 	public String toString() {
 		return "UserOrders [orderId=" + orderId + ", userId=" + userId + ", restaurantId=" + restaurantId
 				+ ", deliveryBoyId=" + deliveryBoyId + ", orderStatus=" + orderStatus + ", amount=" + amount + ", date="
-				+ date + ", cartId=" + cartId + "]";
+				+ date + ", cartId=" + cartId + ", transactionId=" + transactionId + "]";
 	}
 	
 	

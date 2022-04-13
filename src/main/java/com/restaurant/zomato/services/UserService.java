@@ -92,31 +92,31 @@ public class UserService {
 		return orderService.addOrder(order);
 	}
 
-	public UserLoginResponseBody userAuthentication(long userid, String password) throws Exception {
-		Users user = userDao.getById(userid);
-		
-		
-		LoginResult lor = new LoginResult();
-		
-		UserLoginResponseBody res = new UserLoginResponseBody();
-		lor.setName(user.getName());
-		lor.setPhoneNumber(user.getPhoneNumber());
+	public UserLoginResponseBody userAuthentication(long userid, String password) {
 		
 		ArrayList<LoginResult> arr = new ArrayList<>();
+		Users user = userDao.getById(userid);
+		LoginResult lor = new LoginResult();
+		UserLoginResponseBody res = new UserLoginResponseBody();
 		
-		arr.add(lor);
-		res.setRes(arr);
+		if(user==null  || !(user.getPassword().equals(password)))
+		{
+			res.setStatus("FAIL");
+			res.setStatusCode(400);
+		}
+		else
+		{
+		  lor.setName(user.getName());
+		  lor.setPhoneNumber(user.getPhoneNumber());  
+		  res.setStatus("PASS");
+		  res.setStatusCode(200);
+		 
+		}
 		
+		  arr.add(lor);
+		  res.setRes(arr);
 		
-		if(!user.getPassword().equals(password))
-		    throw new Exception("Invalid Credentials");
-		
-		res.setStatus("PASS");
-		res.setStatusCode(200);
-		
-		
-	return res;
-	}
 
-
+		return res;
+}
 }

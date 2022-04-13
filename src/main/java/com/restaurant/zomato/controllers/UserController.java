@@ -89,24 +89,24 @@ public class UserController {
 		
 		return temp;
 	}
-	
-	@GetMapping("/login/{userid}/{password}")
-	public ResponseEntity<?> authenticateUser(@PathVariable long userid, @PathVariable String password) {
-		try
-		{
-			UsersRequestBodyValidation.validateUserPhoneNumber(userid);
-		  UserLoginResponseBody res =  this.userService.userAuthentication(userid,password);
-		 	ArrayList<UserLoginResponseBody> arr = new ArrayList<>();
-		 	arr.add(res);
-		  return new ResponseEntity<>(arr, HttpStatus.ACCEPTED);
-		}catch(Exception e)
-		{
-			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
-		}
-		
-		
-	    
-	}
+//	
+//	@GetMapping("/login/{userid}/{password}")
+//	public ResponseEntity<?> authenticateUser(@PathVariable long userid, @PathVariable String password) {
+//		try
+//		{
+//			UsersRequestBodyValidation.validateUserPhoneNumber(userid);
+//		  UserLoginResponseBody res =  this.userService.userAuthentication(userid,password);
+//		 	ArrayList<UserLoginResponseBody> arr = new ArrayList<>();
+//		 	arr.add(res);
+//		  return new ResponseEntity<>(arr, HttpStatus.ACCEPTED);
+//		}catch(Exception e)
+//		{
+//			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
+//		}
+//		
+//		
+//	    
+//	}
 	
 	@PostMapping("/login")
 	public UserLoginResponseBody userLogin(@RequestBody LoginUser user) {
