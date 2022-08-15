@@ -3,9 +3,8 @@ package com.restaurant.zomato.services;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.restaurant.zomato.dao.UserDao;
@@ -13,7 +12,6 @@ import com.restaurant.zomato.dto.LoginResult;
 import com.restaurant.zomato.dto.UserLoginResponseBody;
 import com.restaurant.zomato.entities.DeliveryBoy;
 import com.restaurant.zomato.entities.Items;
-import com.restaurant.zomato.entities.LoginUser;
 import com.restaurant.zomato.entities.UserOrders;
 import com.restaurant.zomato.entities.Restaurant;
 import com.restaurant.zomato.entities.Users;
@@ -22,19 +20,20 @@ import com.restaurant.zomato.entities.Users;
 public class UserService {
 	
 	//@Lazy
-	//@Autowired
-	//private PasswordEncoder passwordEncoder;
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 	
 	@Autowired
-	public UserDao userDao;
+	private UserDao userDao;
 	@Autowired
-	public RestaurantService restaurantService;
+	private RestaurantService restaurantService;
 	@Autowired
-	public ItemService itemService;
+	private ItemService itemService;
 	@Autowired
-	public DeliveryBoyService deliveryBoyService;
+	private DeliveryBoyService deliveryBoyService;
 	@Autowired
-	public OrderService orderService;
+	private OrderService orderService;
+	
 
 	public List<Users> getAllUser() {
 
@@ -48,7 +47,8 @@ public class UserService {
 
 	public Users addUser(Users user)
 	{
-		//user.setPassword(passwordEncoder.encode(user.getPassword()));
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		userDao.save(user);
 		return user;
 	}
@@ -99,7 +99,7 @@ public class UserService {
 		LoginResult lor = new LoginResult();
 		UserLoginResponseBody res = new UserLoginResponseBody();
 		
-		if(user==null  || !(user.getPassword().equals(password)))
+		if(user==null  || !(passwordEncoder.matches(password, user.getPassword())))
 		{
 			res.setStatus("FAIL");
 			res.setStatusCode(400);

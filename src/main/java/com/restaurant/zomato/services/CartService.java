@@ -14,6 +14,7 @@ import com.restaurant.zomato.dao.CartDao;
 import com.restaurant.zomato.dao.CartInfoDao;
 import com.restaurant.zomato.dto.CartResponseBody;
 import com.restaurant.zomato.entities.Cart;
+import com.restaurant.zomato.entities.CartInfo;
 import com.restaurant.zomato.entities.Items;
 
 @Service
@@ -73,5 +74,11 @@ public class CartService {
 		temp = cartDao.findByphoneNumber(phoneNumber);
 
 		return cartInfoDao.findByCartId(temp.getCartId());
+	}
+
+	public CartInfo updateCart(CartInfo cartInfo) {
+		// TODO Auto-generated method stub
+		cartInfoDao.save(cartInfo);
+		return cartInfo;
 	}
 }

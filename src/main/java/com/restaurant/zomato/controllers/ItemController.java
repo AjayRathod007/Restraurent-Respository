@@ -21,97 +21,174 @@ import com.restaurant.zomato.services.ItemService;
 import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 
 @RestController
-@CrossOrigin(origins= {"http://localhost:3000"})
+@CrossOrigin(origins = { "http://localhost:3000" })
 public class ItemController {
-	
-	 Logger logger = LoggerFactory.getLogger(ItemController.class);
+
+	Logger logger = LoggerFactory.getLogger(ItemController.class);
 	@Autowired
 	public ItemService itemService;
-	
-	
+
 	@GetMapping("/items")
-	public List<Items>getAllItem(){
+
+	/*
+	 * This API is responsible for fetching all Items Records from Database
+	 * 
+	 * @RequestBody :- NA
+	 * 
+	 * @Response Body :- Return List Of Items, who have registered in application
+	 * successfully.
+	 * 
+	 * 
+	 */
+	public ResponseEntity<?> getAllItem() {
 		List<Items> temp = null;
 		try {
-			temp=this.itemService.getAllItem();
-			if(temp.size()==0)
+			temp = this.itemService.getAllItem();
+			if (temp.size() == 0)
 				throw new Exception("not found any Item");
-			
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-			
+			else
+				logger.info("item founded successfully");
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
 		}
-		return temp;
+
 	}
+
+	/*
+	 * This API is responsible for fetching menu of restaurant Records from Database
+	 * 
+	 * @RequestBody :- restaurantId
+	 * 
+	 * @Response Body :- Return ListOfItems , who have registered in application
+	 * successfully.
+	 * 
+	 * 
+	 */
 	@GetMapping("/menu/{restaurantId}")
-	public List<Items>getAllItemByRestaurantId(@PathVariable int restaurantId){
+	public ResponseEntity<?> getAllItemByRestaurantId(@PathVariable int restaurantId) {
 		List<Items> temp = null;
 		try {
-			
-			logger.info("Received restaurantId {}",restaurantId);
+
+			logger.info("Received restaurantId {}", restaurantId);
 			UsersRequestBodyValidation.validateRestaurantId(restaurantId);
-			temp=this.itemService.getAllItemByRestaurantId(restaurantId);
-			logger.info("Saved RestaurantId {}",restaurantId);
-		}catch(Exception e){
-			System.out.println(e.getMessage());
-			
+			temp = this.itemService.getAllItemByRestaurantId(restaurantId);
+			logger.info("Saved RestaurantId {}", restaurantId);
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
+
 		}
-		return temp;
+
 	}
-	
+
+	/*
+	 * This API is responsible for fetching oneItem of restaurant Records from
+	 * Database
+	 * 
+	 * @RequestBody :- itemId
+	 * 
+	 * @Response Body :- Return Items which contains -
+	 * itemId,RestaurantId,itemName<ItemPrice,quantity who have registered in
+	 * application successfully.
+	 * 
+	 * 
+	 */
+
 	@GetMapping("/items/{itemId}")
-	public Items getOneItem(@PathVariable int itemId) {
+	public ResponseEntity<?> getOneItem(@PathVariable int itemId) {
 		Items item = null;
 		try {
 			UsersRequestBodyValidation.validateItemName(itemId);
 			item = this.itemService.getOneItem(itemId);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-			
+			logger.info("item found Successfully");
+			return new ResponseEntity<>(item, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
+
 		}
-		return item;
+
 	}
-	
+
+	/*
+	 * This API is responsible for Add Item of Restaurant in application
+	 * 
+	 * @RequestBody :- Items which contains -
+	 * itemId,RestaurantId,itemName<ItemPrice,quantity.
+	 * 
+	 * @Response Body :- Return Items which contains -
+	 * itemId,RestaurantId,itemName<ItemPrice,quantity.
+	 * 
+	 * 
+	 */
+
 	@PostMapping("/items")
-	public Items addItem(@RequestBody Items item) {
+	public ResponseEntity<?> addItem(@RequestBody Items item) {
 		Items temp = null;
 		try {
-			UsersRequestBodyValidation.validateItemField(item.getRestaurantId(),item.getItemName(),item.getItemPrice());
+			UsersRequestBodyValidation.validateItemField(item.getRestaurantId(), item.getItemName(),
+					item.getItemPrice());
 			temp = this.itemService.addItem(item);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			logger.info("item addes Successfully");
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
 		}
-		return temp;
-		
+
 	}
-	
+
+	/*
+	 * This API is responsible for update Item of Restaurant in application
+	 * 
+	 * @RequestBody :- Items which contains -
+	 * itemId,RestaurantId,itemName<ItemPrice,quantity.
+	 * 
+	 * @Response Body :- Return Items which contains -
+	 * itemId,RestaurantId,itemName<ItemPrice,quantity.
+	 * 
+	 * 
+	 */
+
 	@PutMapping("/items")
-	public Items updateItem(@RequestBody Items item) {
+	public ResponseEntity<?> updateItem(@RequestBody Items item) {
 		Items temp = null;
 		try {
-			UsersRequestBodyValidation.validateItemField(item.getRestaurantId(),item.getItemName(),item.getItemPrice());
+			UsersRequestBodyValidation.validateItemField(item.getRestaurantId(), item.getItemName(),
+					item.getItemPrice());
 			temp = this.itemService.updateItem(item);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			logger.info("update Item successfully");
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
 		}
-		return temp;
-		
+
 	}
-	
+
+	/*
+	 * This API is responsible for deleteItem of restaurant details in application
+	 * 
+	 * @RequestBody :- itemId
+	 * 
+	 * @Response Body :- Return message Item deleted successfully.
+	 * 
+	 * 
+	 */
 	@DeleteMapping("/items/{itemId}")
-	public ResponseEntity<HttpStatus> deleteItem(@PathVariable int itemId){
+	public ResponseEntity<HttpStatus> deleteItem(@PathVariable int itemId) {
 		try {
 			UsersRequestBodyValidation.validateItemName(itemId);
 			this.itemService.deleteItem(itemId);
 			return new ResponseEntity<>(HttpStatus.OK);
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-			
+
 		}
-		
 
-
-}
+	}
 
 }

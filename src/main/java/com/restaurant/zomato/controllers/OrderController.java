@@ -5,6 +5,9 @@ import java.util.List;
 import com.restaurant.zomato.dto.OrderRequestBody;
 import com.restaurant.zomato.dto.PlacedOrder;
 import com.restaurant.zomato.dto.PreviewOrder;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,87 +26,148 @@ import com.restaurant.zomato.services.OrderService;
 import com.restaurant.zomato.validation.UsersRequestBodyValidation;
 
 @RestController
-@CrossOrigin(origins= {"http://localhost:3000"})
+@CrossOrigin(origins = { "http://localhost:3000" })
 public class OrderController {
+	Logger logger = LoggerFactory.getLogger(OrderController.class);
 	@Autowired
 	private OrderService orderService;
 
+	/*
+	 * This API is responsible for fetching all UserOrders Records from Database
+	 * 
+	 * @RequestBody :- NA
+	 * 
+	 * @Response Body :- Return List Of userOrders, who have registered in
+	 * application successfully.
+	 * 
+	 * 
+	 */
 	@GetMapping("/orders")
-	public List<UserOrders> getAllOrder() {
+	public ResponseEntity<?> getAllOrder() {
 		List<UserOrders> temp = null;
 		try {
 			temp = this.orderService.getAllOrder();
 			if (temp.size() == 0)
 				throw new Exception("not found any Order");
+			else
+				logger.info("Data found");
+
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
 
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.info(e.getMessage());
+
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.ACCEPTED);
 
 		}
-		return temp;
+
 	}
 
+	/*
+	 * This API is responsible for fetching oneUserOrder detail Records from
+	 * Database
+	 * 
+	 * @RequestBody :- orderId
+	 * 
+	 * @Response Body :- Return UserOrders which contains -
+	 * orderId,userId,restaurantId,deliveryBoyId,orderStatus,amount,date,
+	 * transactionId,cartId, who have ordered in application successfully.
+	 * 
+	 */
+
 	@GetMapping("/orders/{orderId}")
-	public UserOrders getOneOrder(@PathVariable int orderId) {
+	public ResponseEntity<?> getOneOrder(@PathVariable int orderId) {
 		UserOrders temp = null;
 		try {
 			UsersRequestBodyValidation.validateOrderId(orderId);
 			temp = this.orderService.getOneOrder(orderId);
+			logger.info("order detail found");
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
 		} catch (Exception e) {
-			System.out.println(e.getMessage());
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
+
 		}
-		return temp;
-	}
-
-	@PostMapping("/orders")
-	public UserOrders addOrder(@RequestBody UserOrders order) {
-		return this.orderService.addOrder(order);
 
 	}
 
+	/*
+	 * This API is responsible for updaetUserOrder details in application
+	 * 
+	 * 
+	 * @Request Body :- UserOrders which contains -
+	 * orderId,userId,restaurantId,deliveryBoyId,orderStatus,amount,date,
+	 * transactionId,cartId.
+	 * 
+	 * 
+	 * @Response Body :- Return UserOrders which contains -
+	 * orderId,userId,restaurantId,deliveryBoyId,orderStatus,amount,date,
+	 * transactionId,cartId, who have ordered in application successfully.
+	 * 
+	 */
 	@PutMapping("/orders")
-	public UserOrders updateOrder(@RequestBody UserOrders order) {
-		return this.orderService.updateOrder(order);
+	public ResponseEntity<?> updateOrder(@RequestBody UserOrders order) {
+
+		UserOrders temp = null;
+		try {
+			temp = this.orderService.updateOrder(order);
+			logger.info("order updated successfully");
+			return new ResponseEntity<>(temp, HttpStatus.ACCEPTED);
+		} catch (Exception e) {
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(e.getMessage(), HttpStatus.FAILED_DEPENDENCY);
+
+		}
 
 	}
+
+	/*
+	 * This API is responsible for deleteUserOrder details in application
+	 * 
+	 * @RequestBody :- orderId
+	 * 
+	 * @Response Body :- Return message userOrder deleted successfully.
+	 * 
+	 * 
+	 */
 
 	@DeleteMapping("/orders/{orderId}")
-	public ResponseEntity<HttpStatus> deleteOrder(@PathVariable int orderId) {
+	public ResponseEntity<?> deleteOrder(@PathVariable int orderId) {
 		try {
 			this.orderService.deleteOrder(orderId);
+			logger.info("user order deleted successfully");
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
+			logger.info(e.getMessage());
 			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 
 		}
 
 	}
 
+	/*
+	 * This API is responsible for OrderPLaced in application
+	 * 
+	 * @RequestBody :- OrderRequestBody which contains -
+	 * cartId,phoneNumber,restaurantId,amount.
+	 * 
+	 * @Response Body :- Return UserOrders which contains -
+	 * orderId,userId,restaurantId,deliveryBoyId,orderStatus,amount,date,
+	 * transactionId,cartId, who have ordered in application successfully.
+	 * 
+	 */
+
 	@PostMapping("order/placeorder")
-	public ResponseEntity<UserOrders> confirmOrder(@RequestBody OrderRequestBody orderRequestBody){
+	public ResponseEntity<?> confirmOrder(@RequestBody OrderRequestBody orderRequestBody) {
 		UserOrders pp;
 		try {
 			pp = orderService.confirmOrder(orderRequestBody);
-			return new ResponseEntity<UserOrders>(pp,HttpStatus.OK);
-			} catch (Exception e) {
-				
-				System.out.println("Exception occured : "+e.getMessage());
-				return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);			}
+			logger.info("order placed successfully");
+			return new ResponseEntity<>(pp, HttpStatus.OK);
+		} catch (Exception e) {
+
+			logger.info(e.getMessage());
+			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-
-
-//	@PostMapping("/placedOrder")
-//	public ResponseEntity<PlacedOrder> placedOrder(@RequestBody PreviewOrder previewOrder) {
-//		PlacedOrder pp;
-//		try {
-//			pp = orderService.placeOrder(previewOrder);
-//			return new ResponseEntity<PlacedOrder>(pp,HttpStatus.OK);
-//		} catch (Exception e) {
-//			
-//			System.out.println("Exception occured : "+e.getMessage());
-//			return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-//		}}
-
-
+}

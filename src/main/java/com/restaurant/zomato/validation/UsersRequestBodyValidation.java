@@ -73,4 +73,13 @@ public class UsersRequestBodyValidation {
 			throw new Exception("wrong delivery Boy Details sent");
 	}
 
+	public static void validateCartId(int cartId) throws Exception {
+		// TODO Auto-generated method stub
+		String cId;
+		cId=String.valueOf(cartId);
+		if(cId.length()==0)
+			throw new Exception("wrong cart Item Details sent");
+		
+	}
+
 }
